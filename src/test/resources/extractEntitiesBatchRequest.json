@@ -1,0 +1,19 @@
+{
+	"options": {
+		"EntityList": "Person,Location,Address,Date,Organization,Phone,WebAddress,ZipCode"
+	},
+    "Input": {
+        "Row": [
+            {
+                "PlainText": "The United Nations (UN) is an intergovernmental organization to promote international co-operation. The organization was established on 24 October 1945 after World War II in order to prevent another such conflict. The text of the Declaration by United Nations was drafted by President Franklin Roosevelt, British Prime Minister Winston Churchill, and Roosevelt aide Harry Hopkins, while meeting at the White House on 29 December 1941. Its headquarters are situated at 1st Avenue between 42nd and 48th Street, New York, NY 10017, USA. WebAddress of the organization is www.un.org Phone number for public enquiries is 212-963-4475",
+			"user_fields": [{
+				"name": "name1",
+				"value": "value1"
+			}, {
+				"name": "name2",
+				"value": "value2"
+			}]
+            }
+        ]
+    }
+}

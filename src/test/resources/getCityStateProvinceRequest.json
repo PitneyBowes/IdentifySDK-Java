@@ -1,0 +1,17 @@
+{
+"Input":
+	{
+		"Row":
+		[
+		{
+		"PostalCode":"11368",
+		"user_fields":[{"name": "name1",
+				"value": "value1"},
+				{"name": "name2",
+				"value" : "value2"
+				}
+				]
+		}
+		]
+	}
+}

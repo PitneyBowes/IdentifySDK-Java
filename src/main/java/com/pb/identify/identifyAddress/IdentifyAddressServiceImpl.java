@@ -31,6 +31,10 @@ import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Valid
 import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.ValidateMailingAddressPremiumAPIResponseList;
 import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateMailingAddressProAPIRequest;
 import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateMailingAddressProAPIResponseList;
+import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIRequest;
+import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIResponseList;
+import com.pb.identify.identifyAddress.getPostalCodes.model.GetPostalCodesAPIRequest;
+import com.pb.identify.identifyAddress.getPostalCodes.model.GetPostalCodesAPIResponseList;
 import com.pb.identify.utils.UrlMaker;
 import com.pb.identify.utils.Utility;
 
@@ -41,6 +45,8 @@ public class IdentifyAddressServiceImpl implements IdentifyAddressService {
 	private static final String validateMailingAddressURL = "/identifyaddress/v1/rest/validatemailingaddress/results.json";
 	private static final String validateMailingAddressProURL = "/identifyaddress/v1/rest/validatemailingaddresspro/results.json";
 	private static final String validateMailingAddressPremiumURL = "/identifyaddress/v1/rest/validatemailingaddresspremium/results.json";
+	private static final String getCityStateProvinceURL = "/identifyaddress/v1/rest/getcitystateprovince/results.json";
+	private static final String getPostalCodesURL = "/identifyaddress/v1/rest/getpostalcodes/results.json";
 
 	@Override
 	public void validateMailingAddressAsync(final List<com.pb.identify.identifyAddress.validateMailingAddress.model.Address> addresses,final com.pb.identify.identifyAddress.validateMailingAddress.model.Options options, final RequestObserver<ValidateMailingAddressAPIResponseList> requestObserver) {
@@ -181,6 +187,98 @@ public class IdentifyAddressServiceImpl implements IdentifyAddressService {
 		Entity paramEntity = Entity.entity(gson.toJson(request), MediaType.APPLICATION_JSON_TYPE);
 		
 		return Utility.processPOSTRequest(paramEntity, urlBuilder.toString(), ValidateMailingAddressPremiumAPIResponseList.class);
+	}
+	
+	@Override
+	public void getCityStateProvinceAsync(final List<com.pb.identify.identifyAddress.getCityStateProvince.model.Record> records, final com.pb.identify.identifyAddress.getCityStateProvince.model.Options options, final RequestObserver<GetCityStateProvinceAPIResponseList> requestObserver){
+		org.apache.log4j.Logger.getRootLogger().setLevel(Level.OFF);
+		final ExecutorService executorService = Executors.newFixedThreadPool(1);
+		executorService.submit(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					GetCityStateProvinceAPIResponseList getCityStateProvinceAPIResponseList = processGetCityStateProvinceRequest(records,options);
+
+					requestObserver.onSuccess(getCityStateProvinceAPIResponseList);
+
+				} catch (SdkException e) {
+					requestObserver.onFailure(e);
+				}
+				
+				finally{
+					executorService.shutdown();					
+				}
+			}
+		});
+	}
+	
+	@Override
+	public GetCityStateProvinceAPIResponseList getCityStateProvince(List<com.pb.identify.identifyAddress.getCityStateProvince.model.Record> records, com.pb.identify.identifyAddress.getCityStateProvince.model.Options options) 
+			throws SdkException{
+		return processGetCityStateProvinceRequest(records, options);
+	}
+	
+	private GetCityStateProvinceAPIResponseList processGetCityStateProvinceRequest(List<com.pb.identify.identifyAddress.getCityStateProvince.model.Record> records, com.pb.identify.identifyAddress.getCityStateProvince.model.Options options) throws SdkException{
+	
+		UrlMaker urlMaker = UrlMaker.getInstance();
+		StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(getCityStateProvinceURL));
+		
+		GetCityStateProvinceAPIRequest request = new GetCityStateProvinceAPIRequest();
+		
+		request.getInputRecord().getRecords().addAll(records);
+		request.setOptions(options);
+		Gson gson = new Gson();
+		
+		_LOG.debug("API URL : " + urlBuilder);
+		Entity paramEntity = Entity.entity(gson.toJson(request), MediaType.APPLICATION_JSON_TYPE);
+		
+		return Utility.processPOSTRequest(paramEntity, urlBuilder.toString(), GetCityStateProvinceAPIResponseList.class);
+	}
+	
+	@Override
+	public void getPostalCodesAsync(final List<com.pb.identify.identifyAddress.getPostalCodes.model.Record> records, final com.pb.identify.identifyAddress.getPostalCodes.model.Options options, final RequestObserver<GetPostalCodesAPIResponseList> requestObserver){
+		org.apache.log4j.Logger.getRootLogger().setLevel(Level.OFF);
+		final ExecutorService executorService = Executors.newFixedThreadPool(1);
+		executorService.submit(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					GetPostalCodesAPIResponseList getPostalCodesAPIResponseList = processGetPostalCodesRequest(records,options);
+
+					requestObserver.onSuccess(getPostalCodesAPIResponseList);
+
+				} catch (SdkException e) {
+					requestObserver.onFailure(e);
+				}
+				
+				finally{
+					executorService.shutdown();					
+				}
+			}
+		});
+	}
+	
+	@Override
+	public GetPostalCodesAPIResponseList getPostalCodes(List<com.pb.identify.identifyAddress.getPostalCodes.model.Record> records, com.pb.identify.identifyAddress.getPostalCodes.model.Options options) 
+			throws SdkException{
+		return processGetPostalCodesRequest(records, options);
+	}
+	
+	private GetPostalCodesAPIResponseList processGetPostalCodesRequest(List<com.pb.identify.identifyAddress.getPostalCodes.model.Record> records, com.pb.identify.identifyAddress.getPostalCodes.model.Options options) throws SdkException{
+	
+		UrlMaker urlMaker = UrlMaker.getInstance();
+		StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(getPostalCodesURL));
+		
+		GetPostalCodesAPIRequest request = new GetPostalCodesAPIRequest();
+		
+		request.getInputRecord().getRecords().addAll(records);
+		request.setOptions(options);
+		Gson gson = new Gson();
+		
+		_LOG.debug("API URL : " + urlBuilder);
+		Entity paramEntity = Entity.entity(gson.toJson(request), MediaType.APPLICATION_JSON_TYPE);
+		
+		return Utility.processPOSTRequest(paramEntity, urlBuilder.toString(), GetPostalCodesAPIResponseList.class);
 	}
 
 }

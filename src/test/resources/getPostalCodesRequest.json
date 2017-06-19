@@ -1,0 +1,18 @@
+{
+"Input":
+	{
+		"Row":
+		[
+		{
+		"City":"Corona",
+		"StateProvince":"NY",
+		"user_fields":[{"name": "name1",
+				"value": "value1"},
+				{"name": "name2",
+				"value" : "value2"
+				}
+				]
+		}
+		]
+	}
+}

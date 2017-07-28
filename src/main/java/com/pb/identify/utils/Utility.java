@@ -108,7 +108,7 @@ public class Utility {
             String accessToken = OAuthFactory.getOAuthService().getAuthenticationToken();
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target(url);
-            Response apiResponse = target.request(MediaType.APPLICATION_JSON).header(Constants.AUTH_HEADER, Constants.BEARER+accessToken).buildPost(paramEntity).invoke();
+            Response apiResponse = target.request(MediaType.APPLICATION_JSON).header(Constants.AUTH_HEADER, Constants.BEARER+accessToken).header(Constants.USER_AGENT, "Java-SDK").buildPost(paramEntity).invoke();
             Gson gson = new Gson();
             String jsonResponse = apiResponse.readEntity(String.class);
             if (apiResponse.getStatus() == Response.Status.OK.getStatusCode()) {

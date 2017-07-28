@@ -18,6 +18,7 @@ import com.pb.identify.exception.SdkException;
 import com.pb.identify.identifyAddress.validateMailingAddress.model.ValidateMailingAddressAPIResponseList;
 import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.ValidateMailingAddressPremiumAPIResponseList;
 import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateMailingAddressProAPIResponseList;
+import com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.ValidateMailingAddressUSCANAPIResponseList;
 import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIResponseList;
 import com.pb.identify.identifyAddress.getPostalCodes.model.GetPostalCodesAPIResponseList;
 
@@ -89,6 +90,8 @@ public interface IdentifyAddressService {
 	public void validateMailingAddressPremiumAsync(List<com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Options options, 
 			RequestObserver<ValidateMailingAddressPremiumAPIResponseList> requestObserver);
 	
+	
+	
 	/**
 	 * Returns a city and state/province for a given input postal code.
 	 * 
@@ -132,5 +135,28 @@ public interface IdentifyAddressService {
 	 */
 	public void getPostalCodesAsync(List<com.pb.identify.identifyAddress.getPostalCodes.model.Record> records, com.pb.identify.identifyAddress.getPostalCodes.model.Options options, 
 			RequestObserver<GetPostalCodesAPIResponseList> requestObserver);
+	
+	/**
+	 * Validate and format the batch of input addresses and fills the missing details for ValidateMailingAddressUSCAN
+	 * 
+	 * @param addresses List of addresses to validate
+	 * @param options List of options
+	 * @return ValidateMailingAddressUSCANAPIResponseList
+	 * @throws SdkException  SdkException
+	 */
+	public ValidateMailingAddressUSCANAPIResponseList validateMailingAddressUSCAN(List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options) 
+			throws SdkException;
+	
+	/**
+	 * Validate and format the batch of input addresses and fills the missing details asynchronously for ValidateMailingAddressUSCAN
+	 * 
+	 * @param addresses List of addresses to validate
+	 * @param options List of options
+	 * @param requestObserver Observer interface for request
+	 
+	 */
+	public void validateMailingAddressUSCANAsync(List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options, 
+			RequestObserver<ValidateMailingAddressUSCANAPIResponseList> requestObserver);
+	
 
 }

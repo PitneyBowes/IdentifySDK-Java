@@ -31,6 +31,8 @@ import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.Valid
 import com.pb.identify.identifyAddress.validateMailingAddressPremium.model.ValidateMailingAddressPremiumAPIResponseList;
 import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateMailingAddressProAPIRequest;
 import com.pb.identify.identifyAddress.validateMailingAddressPro.model.ValidateMailingAddressProAPIResponseList;
+import com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.ValidateMailingAddressUSCANAPIRequest;
+import com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.ValidateMailingAddressUSCANAPIResponseList;
 import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIRequest;
 import com.pb.identify.identifyAddress.getCityStateProvince.model.GetCityStateProvinceAPIResponseList;
 import com.pb.identify.identifyAddress.getPostalCodes.model.GetPostalCodesAPIRequest;
@@ -47,6 +49,7 @@ public class IdentifyAddressServiceImpl implements IdentifyAddressService {
 	private static final String validateMailingAddressPremiumURL = "/identifyaddress/v1/rest/validatemailingaddresspremium/results.json";
 	private static final String getCityStateProvinceURL = "/identifyaddress/v1/rest/getcitystateprovince/results.json";
 	private static final String getPostalCodesURL = "/identifyaddress/v1/rest/getpostalcodes/results.json";
+	private static final String validateMailingAddressUSCANURL = "/identifyaddress/v1/rest/validatemailingaddressuscan/results.json";
 
 	@Override
 	public void validateMailingAddressAsync(final List<com.pb.identify.identifyAddress.validateMailingAddress.model.Address> addresses,final com.pb.identify.identifyAddress.validateMailingAddress.model.Options options, final RequestObserver<ValidateMailingAddressAPIResponseList> requestObserver) {
@@ -280,5 +283,52 @@ public class IdentifyAddressServiceImpl implements IdentifyAddressService {
 		
 		return Utility.processPOSTRequest(paramEntity, urlBuilder.toString(), GetPostalCodesAPIResponseList.class);
 	}
+	
+	@Override
+	public void validateMailingAddressUSCANAsync(final List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, final com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options, final RequestObserver<ValidateMailingAddressUSCANAPIResponseList> requestObserver){
+		org.apache.log4j.Logger.getRootLogger().setLevel(Level.OFF);
+		final ExecutorService executorService = Executors.newFixedThreadPool(1);
+		executorService.submit(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					ValidateMailingAddressUSCANAPIResponseList validateMailingAddressUSCANAPIResponseList = processValidateMailingAddressUSCANRequest(addresses,options);
+
+					requestObserver.onSuccess(validateMailingAddressUSCANAPIResponseList);
+
+				} catch (SdkException e) {
+					requestObserver.onFailure(e);
+				}
+				
+				finally{
+					executorService.shutdown();					
+				}
+			}
+		});
+	}
+	
+	@Override
+	public ValidateMailingAddressUSCANAPIResponseList validateMailingAddressUSCAN(List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options) 
+			throws SdkException{
+		return processValidateMailingAddressUSCANRequest(addresses, options);
+	}
+	
+	private ValidateMailingAddressUSCANAPIResponseList processValidateMailingAddressUSCANRequest(List<com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Address> addresses, com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model.Options options) throws SdkException{
+	
+		UrlMaker urlMaker = UrlMaker.getInstance();
+		StringBuilder urlBuilder = new StringBuilder(urlMaker.getAbsoluteUrl(validateMailingAddressUSCANURL));
+		
+		ValidateMailingAddressUSCANAPIRequest request = new ValidateMailingAddressUSCANAPIRequest();
+		
+		request.getInputAddressUSCAN().getAddresses().addAll(addresses);
+		request.setOptions(options);
+		Gson gson = new Gson();
+		
+		_LOG.debug("API URL : " + urlBuilder);
+		Entity paramEntity = Entity.entity(gson.toJson(request), MediaType.APPLICATION_JSON_TYPE);
+		
+		return Utility.processPOSTRequest(paramEntity, urlBuilder.toString(), ValidateMailingAddressUSCANAPIResponseList.class);
+	}
+
 
 }

@@ -8,6 +8,7 @@ com.pb.identify.identifyAddress.getPostalCodes.model
 com.pb.identify.identifyAddress.validateMailingAddress.model
 com.pb.identify.identifyAddress.validateMailingAddressPremium.model
 com.pb.identify.identifyAddress.validateMailingAddressPro.model
+com.pb.identify.identifyAddress.validateMailingAddressUSCAN.model
 com.pb.identify.identifyEmail
 com.pb.identify.identifyEmail.validateEmailAddress.model
 com.pb.identify.identifyEntity
